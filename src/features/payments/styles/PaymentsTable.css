@@ -1,0 +1,71 @@
+.table-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 60vw;
+  min-width: 600px;
+}
+
+.col-header-row {
+  display: grid;
+  grid-template-columns: 3rem 1fr 1fr 1fr;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  color: #acacac;
+  padding: 0.5rem 0.75rem;
+}
+
+.col-header-row > div:nth-child(2) {
+  text-align: left;
+}
+
+.col-header-row > div:nth-child(3) {
+  text-align: left;
+}
+
+.col-header-row > div:nth-child(4) {
+  text-align: right;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 3rem 1fr 1fr 1fr;
+  padding: 0.75rem;
+  background-color: #f8fbfd;
+  border-radius: 8px;
+  align-items: center;
+}
+
+.payment-status-icon {
+  display: flex;
+  align-items: center;
+}
+
+.table-cell {
+  text-align: left;
+}
+
+.amount-cell {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: right;
+}
+
+.pagination-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  color: #acacac;
+}
+
+.pagination-text {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  color: #acacac;
+}
