@@ -4,7 +4,7 @@ import PaymentsTableFooter from "./components/PaymentsTableFooter";
 import { fetchPaymentsForPage } from "./api/paymentsService";
 import { formatDate } from "../../helpers/formatDate";
 import RefreshIcon from "../../common/svgs/RefreshIcon";
-import "./styles/PaymentsPage.css";
+import "./styles/PaymentsTable.css";
 import { PAGINATION_START_ID } from "./constants";
 
 const PaymentsPage = () => {
@@ -17,9 +17,10 @@ const PaymentsPage = () => {
 
   // TODO: Seek clarification on dates. 2nd and 4th Friday of the month?
   // Only two dates or does this apply to every month? Consider switching to a Date Picker with only valid dates selecatable
+
   const paymentDates = ["2024-06-14", "2024-06-28"];
-  const [selectedDate, setSelectedDate] = useState(paymentDates[0]);
-  const selectedDateIndex = paymentDates.indexOf(selectedDate);
+  const [selectedDateIndex, setSelectedDateIndex] = useState(0);
+  const selectedDate = paymentDates[selectedDateIndex];
   const hasPrevDate = selectedDateIndex > 0;
   const hasNextDate = selectedDateIndex < paymentDates.length - 1;
 
@@ -29,7 +30,7 @@ const PaymentsPage = () => {
   // React Query also has useInfiniteQuery hook we could use if we wanted to infinitely scroll, instead of press to paginate
 
   useEffect(() => {
-    const loadPayments = async () => {
+    const fetchPayments = async () => {
       setLoading(true);
       setError(null);
       try {
@@ -46,7 +47,7 @@ const PaymentsPage = () => {
       }
     };
 
-    loadPayments();
+    fetchPayments();
   }, [selectedDate, currentPagination]);
 
   const handlePreviousPage = () => {
@@ -61,8 +62,8 @@ const PaymentsPage = () => {
     }
   };
 
-  const handleDateChange = (newDate) => {
-    setSelectedDate(newDate);
+  const handleDateChange = (newIndex) => {
+    setSelectedDateIndex(newIndex);
     setPaginationStack([PAGINATION_START_ID]);
     setNextPaginationId(null);
   };
@@ -74,7 +75,8 @@ const PaymentsPage = () => {
 
   // TODO: Cleanup Loading / Error state.
   // Can pull loading and error state from react query returned object
-  // Should also move display to inside of table, not blocking rest of ui
+  // Should also move loading display to inside a table and error to a toast notification, not blocking rest of ui
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
@@ -98,7 +100,6 @@ const PaymentsPage = () => {
         onPreviousPage={handlePreviousPage}
         onNextPage={handleNextPage}
         selectedDateIndex={selectedDateIndex}
-        paymentDates={paymentDates}
       />
     </div>
   );

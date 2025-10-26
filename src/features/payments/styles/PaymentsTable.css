@@ -1,3 +1,28 @@
+/* Payments Page */
+.payments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.date-display {
+  font-weight: 600;
+  font-size: 16px;
+  color: #000000;
+}
+
+.refresh-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  color: #acacac;
+}
+
+/* Payments Table */
 .table-container {
   display: flex;
   flex-direction: column;
@@ -51,6 +76,13 @@
   font-size: 16px;
   line-height: 24px;
   text-align: right;
+}
+
+/* Payments footer */
+.payments-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .pagination-button {

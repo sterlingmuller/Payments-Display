@@ -5,7 +5,7 @@ const PaymentsTableRow = ({ payment }) => {
   return (
     <div className="table-row">
       {/* TODO: Create XCircle icon for bad payment status
-      Conditionally render expected icon */}
+      API should include payment status. Conditionally render expected icon */}
       <div className="payment-status-icon">
         <CheckCircleIcon />
       </div>
