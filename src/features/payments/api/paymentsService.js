@@ -3,7 +3,7 @@ import { PAGINATION_END_ID, PAGINATION_LIMIT } from "../constants";
 const VITE_API_TOKEN = import.meta.env.VITE_API_TOKEN;
 const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const fetchPaymentsByDate = async (date, continuationToken) => {
+export const fetchPaymentByDate = async (date, continuationToken) => {
   const url = `${VITE_API_BASE_URL}/payments?date=${date}&continuationToken=${continuationToken}`;
   const options = { method: "GET", headers: { Authorization: VITE_API_TOKEN } };
 
@@ -15,13 +15,13 @@ export const fetchPaymentsByDate = async (date, continuationToken) => {
   return response.json();
 };
 
-export const fetchPaymentsForPage = async (date, initialPageId) => {
+export const fetchPaymentsByPage = async (date, initialPageId) => {
   const payments = [];
   let continuationToken = initialPageId;
 
   for (let i = 0; i < PAGINATION_LIMIT; i++) {
     if (continuationToken === PAGINATION_END_ID) break;
-    const result = await fetchPaymentsByDate(date, continuationToken);
+    const result = await fetchPaymentByDate(date, continuationToken);
 
     payments.push(result.data);
     continuationToken = result.data.paginationToken;

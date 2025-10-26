@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import PaymentsTable from "./components/PaymentsTable";
 import PaymentsTableFooter from "./components/PaymentsTableFooter";
-import { fetchPaymentsForPage } from "./api/paymentsService";
+import { fetchPaymentsByPage } from "./api/paymentsService";
 import { formatDate } from "../../helpers/formatDate";
 import RefreshIcon from "../../common/svgs/RefreshIcon";
 import "./styles/PaymentsTable.css";
@@ -34,7 +34,7 @@ const PaymentsPage = () => {
       setLoading(true);
       setError(null);
       try {
-        const result = await fetchPaymentsForPage(
+        const result = await fetchPaymentsByPage(
           selectedDate,
           currentPagination
         );
