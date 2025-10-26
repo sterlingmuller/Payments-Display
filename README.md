@@ -1,6 +1,9 @@
 # Payments Display
 
-A React application for displaying and navigating payment data.
+MVP web app for displaying payment data.
+
+<img width="1307" height="539" alt="Payments Display" src="https://github.com/user-attachments/assets/ded79fad-8a8c-4d92-b1b3-a73316e76bed" />
+
 
 ## Prerequisites
 
