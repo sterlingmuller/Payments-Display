@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import PaymentsTable from "./components/PaymentsTable";
 import PaymentsTableFooter from "./components/PaymentsTableFooter";
 import { fetchPaymentsByPage } from "./api/paymentsService";
@@ -8,12 +9,8 @@ import "./styles/PaymentsTable.css";
 import { PAGINATION_START_ID } from "./constants";
 
 const PaymentsPage = () => {
-  const [payments, setPayments] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [paginationStack, setPaginationStack] = useState([PAGINATION_START_ID]);
   const currentPagination = paginationStack[paginationStack.length - 1];
-  const [nextPaginationId, setNextPaginationId] = useState(null);
 
   // TODO: Seek clarification on dates. 2nd and 4th Friday of the month?
   // Only two dates or does this apply to every month? Consider switching to a Date Picker with only valid dates selecatable
@@ -24,31 +21,19 @@ const PaymentsPage = () => {
   const hasPrevDate = selectedDateIndex > 0;
   const hasNextDate = selectedDateIndex < paymentDates.length - 1;
 
-  // TODO: Replace fetching on useEffect with React Query
-  // React Query auto caches responses so we won't have to worry about refiring API calls
+  // React Query has useInfiniteQuery hook we could use if we wanted to infinitely scroll, instead of press to paginate
 
-  // React Query also has useInfiniteQuery hook we could use if we wanted to infinitely scroll, instead of press to paginate
+  const {
+    isPending,
+    data: paymentsData,
+    error,
+  } = useQuery({
+    queryKey: ["payments", currentPagination, selectedDate],
+    queryFn: () => fetchPaymentsByPage(selectedDate, currentPagination),
+  });
 
-  useEffect(() => {
-    const fetchPayments = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const result = await fetchPaymentsByPage(
-          selectedDate,
-          currentPagination
-        );
-        setPayments(result.payments);
-        setNextPaginationId(result.nextPaginationId);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPayments();
-  }, [selectedDate, currentPagination]);
+  const payments = paymentsData?.payments ?? [];
+  const nextPaginationId = paymentsData?.nextPaginationId ?? null;
 
   const handlePreviousPage = () => {
     if (paginationStack.length > 1) {
@@ -65,19 +50,17 @@ const PaymentsPage = () => {
   const handleDateChange = (newIndex) => {
     setSelectedDateIndex(newIndex);
     setPaginationStack([PAGINATION_START_ID]);
-    setNextPaginationId(null);
   };
 
   const handleRefresh = () => {
     setPaginationStack([PAGINATION_START_ID]);
-    setNextPaginationId(null);
   };
 
   // TODO: Cleanup Loading / Error state.
   // Can pull loading and error state from react query returned object
   // Should also move loading display to inside a table and error to a toast notification, not blocking rest of ui
 
-  if (loading) return <div>Loading...</div>;
+  if (isPending) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
